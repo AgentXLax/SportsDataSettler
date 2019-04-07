@@ -58,12 +58,17 @@ namespace SportsDataSettler
         {
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            dateTimePicker1.Value = DateTime.Today;
 
             DateTime date = dateTimePicker1.Value;
-            Models.Matchup nhl = new Models.Matchup(date);
-            Models.GameData[] games = nhl.games;
-            listBox1.Items.AddRange(games);
-            
+            try
+            {
+                Models.Matchup nhl = new Models.Matchup(date);
+                Models.GameData[] games = nhl.games;
+                listBox1.Items.AddRange(games);
+            }
+            catch {}
+
         }
 
         private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
@@ -82,8 +87,14 @@ namespace SportsDataSettler
         private void button1_Click(object sender, EventArgs e)
         {
             DateTime date = dateTimePicker1.Value;
-            Models.DailySettler settle = new Models.DailySettler(date);
-            label1.Text = settle.ToString();
-        }
+
+            try
+            {
+                Models.DailySettler settle = new Models.DailySettler(date);
+                label1.Text = settle.ToString();
+            }
+            catch { label1.Text = "There were no games today. \r\n" +
+                                  "Could not settle the dailies"; }
+        } 
     }
 }
